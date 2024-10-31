@@ -17,7 +17,7 @@ const getOrderedEnvValues = (): Environment[] => {
   return Object.values(Environment).filter(
     (value): value is Environment => typeof value === "string",
   );
-}
+};
 
 /**
  * History component displays the deployment history for different environments.
@@ -45,47 +45,52 @@ const History = ({ deploys }: HistoryProps): JSX.Element => {
       </h1>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {getOrderedEnvValues().map((env) => (
-          <Card key={env} className="w-full">
-            <CardHeader>
-              <CardTitle className="flex justify-between items-center">
-                <span>{env}</span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => toggleExpand(env)}
-                  aria-label={
-                    expandedEnvs[env] ? "Collapse history" : "Expand history"
-                  }
-                >
-                  {expandedEnvs[env] ? (
-                    <ChevronUp className="h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
-                </Button>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2">
-                {/* @ts-expect-error - TS doesn't know that env is a valid key */}
-                {deploys[env]
-                  ?.slice(0, expandedEnvs[env] ? 5 : 1)
-                  .map((deployment: Deployment, index: number) => (
-                    <li key={index} className="bg-muted p-2 rounded-md text-sm">
-                      <p>
-                        <strong>Date:</strong> {deployment.date}
-                      </p>
-                      <p>
-                        <strong>User:</strong> {deployment.user}
-                      </p>
-                      <p>
-                        <strong>Branch:</strong> {deployment.branch}
-                      </p>
-                    </li>
-                  ))}
-              </ul>
-            </CardContent>
-          </Card>
+          <div key={env}>
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle className="flex justify-between items-center">
+                  <span>{env}</span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => toggleExpand(env)}
+                    aria-label={
+                      expandedEnvs[env] ? "Collapse history" : "Expand history"
+                    }
+                  >
+                    {expandedEnvs[env] ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
+                  </Button>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  {/* @ts-expect-error - TS doesn't know that env is a valid key */}
+                  {deploys[env]
+                    ?.slice(0, expandedEnvs[env] ? 5 : 1)
+                    .map((deployment: Deployment, index: number) => (
+                      <li
+                        key={index}
+                        className="bg-muted p-2 rounded-md text-sm"
+                      >
+                        <p>
+                          <strong>Date:</strong> {deployment.date}
+                        </p>
+                        <p>
+                          <strong>User:</strong> {deployment.user}
+                        </p>
+                        <p>
+                          <strong>Branch:</strong> {deployment.branch}
+                        </p>
+                      </li>
+                    ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
         ))}
       </div>
     </div>
