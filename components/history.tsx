@@ -4,23 +4,27 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import type { Environment, Environments } from "@/lib/types";
+import { Environment, Environments, Deployment } from "@/lib/types";
 
 interface HistoryProps {
   readonly deploys: Environments;
 }
+
+// Helper function to get enum values in order
+function getOrderedEnvValues(): Environment[] {
+  return Object.values(Environment).filter(
+    (value): value is Environment => typeof value === "string",
+  );
+}
+
 const History = ({ deploys }: HistoryProps) => {
   const [expandedEnvs, setExpandedEnvs] = useState<
     Record<Environment, boolean>
-  >({
-    PRD: false,
-    UAT: false,
-    U1AT: false,
-    U2AT: false,
-    U3AT: false,
-  });
-
-  console.log(deploys);
+  >(
+    Object.fromEntries(
+      getOrderedEnvValues().map((env) => [env, false]),
+    ) as Record<Environment, boolean>,
+  );
 
   const toggleExpand = (env: Environment) => {
     setExpandedEnvs((prev) => ({ ...prev, [env]: !prev[env] }));
@@ -32,7 +36,7 @@ const History = ({ deploys }: HistoryProps) => {
         Deployment History
       </h1>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {(Object.keys(deploys) as Environment[]).map((env) => (
+        {getOrderedEnvValues().map((env) => (
           <Card key={env} className="w-full">
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
@@ -55,9 +59,10 @@ const History = ({ deploys }: HistoryProps) => {
             </CardHeader>
             <CardContent>
               <ul className="space-y-2">
+                {/* @ts-expect-error - TS doesn't know that env is a valid key */}
                 {deploys[env]
-                  .slice(0, expandedEnvs[env] ? 5 : 1)
-                  .map((deployment, index) => (
+                  ?.slice(0, expandedEnvs[env] ? 5 : 1)
+                  .map((deployment: Deployment, index: number) => (
                     <li key={index} className="bg-muted p-2 rounded-md text-sm">
                       <p>
                         <strong>Date:</strong> {deployment.date}
