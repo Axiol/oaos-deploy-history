@@ -10,14 +10,22 @@ interface HistoryProps {
   readonly deploys: Environments;
 }
 
-// Helper function to get enum values in order
-function getOrderedEnvValues(): Environment[] {
+/**
+ * Helper function to get enum values in order.
+ */
+const getOrderedEnvValues = (): Environment[] => {
   return Object.values(Environment).filter(
     (value): value is Environment => typeof value === "string",
   );
 }
 
-const History = ({ deploys }: HistoryProps) => {
+/**
+ * History component displays the deployment history for different environments.
+ *
+ * @param {Environments} deploys - The deployment data for different environments.
+ * @returns {JSX.Element} The rendered History component.
+ */
+const History = ({ deploys }: HistoryProps): JSX.Element => {
   const [expandedEnvs, setExpandedEnvs] = useState<
     Record<Environment, boolean>
   >(

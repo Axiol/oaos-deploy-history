@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import {APIDeploy, Deployment, Environments} from "./types";
 
-export function cn(...inputs: ClassValue[]) {
+export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 }
 
@@ -11,7 +11,7 @@ export function cn(...inputs: ClassValue[]) {
  * @param {Array<APIDeploy>} deploys
  * @returns {Environments} Sorted deployments grouped by environment
  */
-export function deploysFormatter(deploys: Array<APIDeploy>): Environments {
+export const deploysFormatter = (deploys: Array<APIDeploy>): Environments => {
   // Input validation
   if (!Array.isArray(deploys)) {
     throw new Error("Input must be an array");
