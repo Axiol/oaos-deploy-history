@@ -27,3 +27,4 @@ jobs:
       with:
         push: true
         tags: axiol/oaos-deploy-history:latest
+        secret-envs: SUPABASE_BASE_URL=${{ secrets.SUPABASE_BASE_URL }} | SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
