@@ -21,6 +21,9 @@ jobs:
         echo "SUPABASE_BASE_URL=${{ secrets.SUPABASE_BASE_URL }}" >> .env.production
         echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env.production
 
+    - name: Check .env file
+      run: cat .env.production
+
     - name: Log into Docker Hub
       uses: docker/login-action@v3.3.0
       with:
