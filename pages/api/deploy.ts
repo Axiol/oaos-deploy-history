@@ -18,6 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           branch: req.query.branch,
           name: req.query.name,
           env: req.query.env,
+          site: req.query.site || "actus",
         }),
         headers: {
           Accept: "application/json",
