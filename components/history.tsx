@@ -7,6 +7,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { Environment, Environments, Deployment } from "@/lib/types";
 
 interface HistoryProps {
+  readonly title: string;
   readonly deploys: Environments;
 }
 
@@ -25,7 +26,7 @@ const getOrderedEnvValues = (): Environment[] => {
  * @param {Environments} deploys - The deployment data for different environments.
  * @returns {JSX.Element} The rendered History component.
  */
-const History = ({ deploys }: HistoryProps): JSX.Element => {
+const History = ({ title, deploys }: HistoryProps): JSX.Element => {
   const [expandedEnvs, setExpandedEnvs] = useState<
     Record<Environment, boolean>
   >(
@@ -39,10 +40,8 @@ const History = ({ deploys }: HistoryProps): JSX.Element => {
   };
 
   return (
-    <div className="container mx-auto p-4 space-y-6">
-      <h1 className="text-3xl font-bold text-center mb-6">
-        Deployment History
-      </h1>
+    <>
+      <h2 className="text-2xl font-bold">{title}</h2>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {getOrderedEnvValues().map((env) => (
           <div key={env}>
@@ -93,7 +92,7 @@ const History = ({ deploys }: HistoryProps): JSX.Element => {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 };
 

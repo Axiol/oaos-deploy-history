@@ -4,6 +4,7 @@ export interface APIDeploy {
   branch: string;
   env: string;
   createdAt: string;
+  site: string;
 }
 
 export interface Deployment {
@@ -13,11 +14,16 @@ export interface Deployment {
 }
 
 export interface Environments {
-  PRD: Deployment[];
-  UAT: Deployment[];
-  U1AT: Deployment[];
-  U2AT: Deployment[];
-  U3AT: Deployment[];
+  PRD?: Deployment[];
+  UAT?: Deployment[];
+  U1AT?: Deployment[];
+  U2AT?: Deployment[];
+  U3AT?: Deployment[];
+}
+
+export interface Sites {
+  actus?: Environments;
+  enterprise?: Environments;
 }
 
 // export type Environment = "PRD" | "UAT" | "U1AT" | "U2AT" | "U3AT";
