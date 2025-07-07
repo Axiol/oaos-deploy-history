@@ -1,5 +1,5 @@
-import { Fragment } from "react";
-import { Sites } from "@/lib/types";
+import { Fragment, JSX } from "react";
+import { Deployment, Sites } from "@/lib/types";
 import { FullCard } from "./full-card";
 
 interface HistoryProps {
@@ -15,7 +15,9 @@ interface HistoryProps {
 const History = ({ deploys }: HistoryProps): JSX.Element => {
   return (
     <>
-      {Object.keys(deploys).map((site) => {
+      {Object.entries(deploys).map(([site, siteDeploys]) => {
+        if (!siteDeploys) return null;
+
         return (
           <Fragment key={site}>
             <h2 className="text-2xl font-bold">
@@ -23,13 +25,14 @@ const History = ({ deploys }: HistoryProps): JSX.Element => {
             </h2>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {/* @ts-expect-error - TS doesn't know that env is a valid key */}
-              {Object.keys(deploys[site] || {}).map((env) => {
+              {Object.entries(siteDeploys).map(([env, envDeploys]) => {
+                if (!envDeploys) return null;
+
                 return (
                   <FullCard
                     key={site + env}
                     env={env}
-                    deploys={deploys[site][env]}
+                    deploys={envDeploys as Deployment[]}
                   />
                 );
               })}
