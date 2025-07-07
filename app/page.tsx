@@ -1,15 +1,17 @@
 import History from "@/components/history";
-import { deploysFormatter } from "@/lib/utils";
+import { sortFormatDeploys } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 async function fetchDeploys() {
   const urls = [
-    "site=eq.actus&env=eq.PRD&limit=6&order=id.desc",
-    "site=eq.actus&env=eq.UAT&limit=6&order=id.desc",
-    "site=eq.actus&env=eq.U1AT&limit=6&order=id.desc",
-    "site=eq.actus&env=eq.U2AT&limit=6&order=id.desc",
-    "site=eq.actus&env=eq.U3AT&limit=6&order=id.desc",
+    "site=eq.actus&env=eq.PRD&limit=5&order=id.desc",
+    "site=eq.actus&env=eq.UAT&limit=5&order=id.desc",
+    "site=eq.actus&env=eq.U1AT&limit=5&order=id.desc",
+    "site=eq.actus&env=eq.U2AT&limit=5&order=id.desc",
+    "site=eq.actus&env=eq.U3AT&limit=5&order=id.desc",
+    "site=eq.entreprise&env=eq.PRD&limit=5&order=id.desc",
+    "site=eq.entreprise&env=eq.UAT&limit=5&order=id.desc",
   ];
 
   const responses = await Promise.all(
@@ -30,21 +32,13 @@ async function fetchDeploys() {
 
 const Home = async () => {
   const multipleDeploys = await fetchDeploys();
-  console.log("Multiple Deploys:", multipleDeploys);
-
-  const deploys = await fetch(`${process.env.SUPABASE_BASE_URL}/Deploy`, {
-    headers: {
-      apikey: process.env.SUPABASE_ANON_KEY ?? "",
-      Authorization: `Bearer ${process.env.SUPABASE_ANON_KEY}`,
-    },
-  }).then((res) => res.json());
 
   return (
     <div className="container mx-auto p-4 space-y-6">
       <h1 className="text-3xl font-bold text-center mb-6">
         Deployment History
       </h1>
-      <History title="Actus" deploys={deploysFormatter(deploys)} />
+      <History deploys={sortFormatDeploys(multipleDeploys)} />
     </div>
   );
 };

@@ -1,24 +1,10 @@
-"use client";
-
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { Environment, Environments, Deployment } from "@/lib/types";
+import { Fragment } from "react";
+import { Sites } from "@/lib/types";
+import { FullCard } from "./full-card";
 
 interface HistoryProps {
-  readonly title: string;
-  readonly deploys: Environments;
+  readonly deploys: Sites;
 }
-
-/**
- * Helper function to get enum values in order.
- */
-const getOrderedEnvValues = (): Environment[] => {
-  return Object.values(Environment).filter(
-    (value): value is Environment => typeof value === "string",
-  );
-};
 
 /**
  * History component displays the deployment history for different environments.
@@ -26,72 +12,31 @@ const getOrderedEnvValues = (): Environment[] => {
  * @param {Environments} deploys - The deployment data for different environments.
  * @returns {JSX.Element} The rendered History component.
  */
-const History = ({ title, deploys }: HistoryProps): JSX.Element => {
-  const [expandedEnvs, setExpandedEnvs] = useState<
-    Record<Environment, boolean>
-  >(
-    Object.fromEntries(
-      getOrderedEnvValues().map((env) => [env, false]),
-    ) as Record<Environment, boolean>,
-  );
-
-  const toggleExpand = (env: Environment) => {
-    setExpandedEnvs((prev) => ({ ...prev, [env]: !prev[env] }));
-  };
-
+const History = ({ deploys }: HistoryProps): JSX.Element => {
   return (
     <>
-      <h2 className="text-2xl font-bold">{title}</h2>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {getOrderedEnvValues().map((env) => (
-          <div key={env}>
-            <Card className="w-full">
-              <CardHeader>
-                <CardTitle className="flex justify-between items-center">
-                  <span>{env}</span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => toggleExpand(env)}
-                    aria-label={
-                      expandedEnvs[env] ? "Collapse history" : "Expand history"
-                    }
-                  >
-                    {expandedEnvs[env] ? (
-                      <ChevronUp className="h-4 w-4" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4" />
-                    )}
-                  </Button>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {/* @ts-expect-error - TS doesn't know that env is a valid key */}
-                  {deploys[env]
-                    ?.slice(0, expandedEnvs[env] ? 5 : 1)
-                    .map((deployment: Deployment, index: number) => (
-                      <li
-                        key={index}
-                        className="bg-muted p-2 rounded-md text-sm"
-                      >
-                        <p>
-                          <strong>Date:</strong> {deployment.date}
-                        </p>
-                        <p>
-                          <strong>User:</strong> {deployment.user}
-                        </p>
-                        <p>
-                          <strong>Branch:</strong> {deployment.branch}
-                        </p>
-                      </li>
-                    ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-        ))}
-      </div>
+      {Object.keys(deploys).map((site) => {
+        return (
+          <Fragment key={site}>
+            <h2 className="text-2xl font-bold">
+              {site.charAt(0).toUpperCase() + site.slice(1)}
+            </h2>
+
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {/* @ts-expect-error - TS doesn't know that env is a valid key */}
+              {Object.keys(deploys[site] || {}).map((env) => {
+                return (
+                  <FullCard
+                    key={site + env}
+                    env={env}
+                    deploys={deploys[site][env]}
+                  />
+                );
+              })}
+            </div>
+          </Fragment>
+        );
+      })}
     </>
   );
 };
