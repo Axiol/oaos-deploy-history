@@ -36,22 +36,33 @@ export const FullCard = ({ deploys, env }: FullCardProps) => {
         </CardHeader>
         <CardContent>
           <ul className="space-y-2">
-            {deploys.map((deployment, index) => (
-              <li
-                key={index}
-                className={`bg-muted p-2 rounded-md text-sm ${index > 0 && !isExpanded && "hidden"}`}
-              >
-                <p>
-                  <strong>Date:</strong> {deployment.date}
-                </p>
-                <p>
-                  <strong>User:</strong> {deployment.user}
-                </p>
-                <p>
-                  <strong>Branch:</strong> {deployment.branch}
-                </p>
-              </li>
-            ))}
+            {deploys.map((deployment, index) => {
+              const date = new Date(deployment.date + "Z");
+
+              return (
+                <li
+                  key={index}
+                  className={`bg-muted p-2 rounded-md text-sm ${index > 0 && !isExpanded && "hidden"}`}
+                >
+                  <p>
+                    <strong>Date:</strong>{" "}
+                    {date.toLocaleDateString("fr-FR", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                  <p>
+                    <strong>User:</strong> {deployment.user}
+                  </p>
+                  <p>
+                    <strong>Branch:</strong> {deployment.branch}
+                  </p>
+                </li>
+              );
+            })}
           </ul>
         </CardContent>
       </Card>
