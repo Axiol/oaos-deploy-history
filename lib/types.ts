@@ -19,6 +19,8 @@ export interface Environments {
   U1AT?: Deployment[];
   U2AT?: Deployment[];
   U3AT?: Deployment[];
+  p1?: Deployment[];
+  u1?: Deployment[];
 }
 
 export interface Sites {
