@@ -24,6 +24,7 @@ export interface Environments {
 export interface Sites {
   actus?: Environments;
   enterprise?: Environments;
+  cmsadmin?: Environments;
 }
 
 // export type Environment = "PRD" | "UAT" | "U1AT" | "U2AT" | "U3AT";
