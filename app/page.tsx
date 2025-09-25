@@ -12,7 +12,8 @@ async function fetchDeploys() {
     "site=eq.actus&env=eq.U3AT&limit=5&order=id.desc",
     "site=eq.entreprise&env=eq.PRD&limit=5&order=id.desc",
     "site=eq.entreprise&env=eq.UAT&limit=5&order=id.desc",
-    "site=eq.cmsadmin&env=eq.UAT&limit=5&order=id.desc",
+    "site=eq.cmsadmin&env=eq.p1&limit=5&order=id.desc",
+    "site=eq.cmsadmin&env=eq.u1&limit=5&order=id.desc",
   ];
 
   const responses = await Promise.all(
