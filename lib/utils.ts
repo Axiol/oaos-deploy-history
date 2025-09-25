@@ -36,3 +36,21 @@ export const sortFormatDeploys = (deploys: Array<Array<APIDeploy>>): Sites => {
     return acc;
   }, {} as Sites);
 };
+
+/**
+ * Formats the env name to avoid u1, p1 ...
+ * @param {String} env
+ * @returns {String} The correct title
+ */
+export const formatTitle = (env: string): String => {
+  if (env === 'p1') {
+    return 'PRD'
+  }
+
+  if (env === 'u1') {
+    return 'UAT'
+  }
+
+  return env
+}
+
