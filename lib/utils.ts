@@ -39,10 +39,10 @@ export const sortFormatDeploys = (deploys: Array<Array<APIDeploy>>): Sites => {
 
 /**
  * Formats the env name to avoid u1, p1 ...
- * @param {String} env
- * @returns {String} The correct title
+ * @param {string} env
+ * @returns {string} The correct title
  */
-export const formatTitle = (env: string): String => {
+export const formatTitle = (env: string): string => {
   if (env === 'p1') {
     return 'PRD'
   }
