@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createClient } from "redis";
+import client from "@/lib/redis"
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
@@ -13,18 +13,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return;
       }
 
-      const client = createClient({
-          username: process.env.REDIS_USERNAME,
-          password: process.env.REDIS_PASSWORD,
-          socket: {
-              host: process.env.REDIS_HOST,
-              port: parseInt(process.env.REDIS_PORT || '')
-          }
-      });
-
-      client.on('error', err => console.log('Redis Client Error', err));
-
-      await client.connect();
       const deployId = await client.incr(`deploy:${req.query.site}:counter`);
       const key = `deploy:${req.query.site}:${deployId}`;
 
