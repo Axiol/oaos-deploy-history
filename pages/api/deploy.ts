@@ -1,9 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { createClient } from "redis";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST":
-      if (!req.query.branch || !req.query.name || !req.query.env) {
+      if (!req.query.branch || !req.query.name || !req.query.env || !req.query.site) {
         res.status(400).json({
           code: "MISSING-BODY",
           message: "Missing parameters",
@@ -12,23 +13,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return;
       }
 
-      await fetch(`${process.env.SUPABASE_BASE_URL}/Deploy`, {
-        method: "POST",
-        body: JSON.stringify({
-          branch: req.query.branch,
-          name: req.query.name,
-          env: req.query.env,
-          site: req.query.site || "actus",
-        }),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          apikey: process.env.SUPABASE_ANON_KEY ?? "",
-          Authorization: `Bearer ${process.env.SUPABASE_ANON_KEY}`,
-        },
-      }).then((r) => {
-        res.status(r.status).json(null);
+      const client = createClient({
+          username: process.env.REDIS_USERNAME,
+          password: process.env.REDIS_PASSWORD,
+          socket: {
+              host: process.env.REDIS_HOST,
+              port: parseInt(process.env.REDIS_PORT || '')
+          }
       });
+
+      client.on('error', err => console.log('Redis Client Error', err));
+
+      await client.connect();
+      const deployId = await client.incr(`deploy:${req.query.site}:counter`);
+      const key = `deploy:${req.query.site}:${deployId}`;
+
+      const deploy = await client.json.set(key, '$', {
+        "branch": req.query.branch,
+        "name": req.query.name,
+        "env": req.query.env,
+        "createdAt": new Date()
+      });
+
+      res.status(deploy === "OK" ? 200 : 500).json(null)
 
       break;
   }
