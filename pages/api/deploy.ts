@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import client from "@/lib/redis"
+import client from "@/lib/redis";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
@@ -13,13 +13,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return;
       }
 
-      const deployId = await client.incr(`deploy:${req.query.site}:counter`);
-      const key = `deploy:${req.query.site}:${deployId}`;
+      const deployId = await client.incr(`deploy:${req.query.site}:${req.query.env}:counter`);
+      const key = `deploy:${req.query.site}:${req.query.env}:${deployId}`;
 
       const deploy = await client.json.set(key, '$', {
         "branch": req.query.branch,
         "name": req.query.name,
-        "env": req.query.env,
         "createdAt": new Date()
       });
 
