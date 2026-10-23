@@ -25,6 +25,7 @@ export interface Sites {
   actus?: Environments;
   enterprise?: Environments;
   cmsadmin?: Environments;
+  accounts?: Environments;
 }
 
 // export type Environment = "p1" | "u1" | "u1a" | "u1b" | "u1c";
