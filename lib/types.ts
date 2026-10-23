@@ -14,13 +14,11 @@ export interface Deployment {
 }
 
 export interface Environments {
-  PRD?: Deployment[];
-  UAT?: Deployment[];
-  U1AT?: Deployment[];
-  U2AT?: Deployment[];
-  U3AT?: Deployment[];
   p1?: Deployment[];
   u1?: Deployment[];
+  u1a?: Deployment[];
+  u1b?: Deployment[];
+  u1c?: Deployment[];
 }
 
 export interface Sites {
@@ -29,12 +27,12 @@ export interface Sites {
   cmsadmin?: Environments;
 }
 
-// export type Environment = "PRD" | "UAT" | "U1AT" | "U2AT" | "U3AT";
+// export type Environment = "p1" | "u1" | "u1a" | "u1b" | "u1c";
 
 export enum Environment {
-  PRD,
-  UAT,
-  U1AT,
-  U2AT,
-  U3AT,
+  p1,
+  u1,
+  u1a,
+  u1b,
+  u1c,
 }

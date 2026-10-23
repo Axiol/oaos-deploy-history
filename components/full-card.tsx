@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Deployment } from "@/lib/types";
-import { formatTitle } from "@/lib/utils";
 
 interface FullCardProps {
   readonly deploys: Array<Deployment>;
@@ -20,7 +19,7 @@ export const FullCard = ({ deploys, env }: FullCardProps) => {
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
-            <span>{formatTitle(env)}</span>
+            <span>{env}</span>
             <Button
               variant="ghost"
               size="sm"
