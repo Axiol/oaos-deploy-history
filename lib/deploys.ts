@@ -11,6 +11,9 @@ const DEPLOY_QUERIES = [
   "site=eq.entreprise&env=eq.u1&limit=5&order=id.desc",
   "site=eq.cmsadmin&env=eq.p1&limit=5&order=id.desc",
   "site=eq.cmsadmin&env=eq.u1&limit=5&order=id.desc",
+  "site=eq.cmsadmin&env=eq.u1a&limit=5&order=id.desc",
+  "site=eq.cmsadmin&env=eq.u1b&limit=5&order=id.desc",
+  "site=eq.cmsadmin&env=eq.u1c&limit=5&order=id.desc",
   "site=eq.accounts&env=eq.p1&limit=5&order=id.desc",
   "site=eq.accounts&env=eq.u1&limit=5&order=id.desc",
 ];
